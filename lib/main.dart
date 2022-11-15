@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final myGradeController = TextEditingController();
+  final gradeLetter = TextEditingController();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Grade Calculator',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,7 +29,73 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Grade Calculator",
+          ),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 30.0, right: 10, left: 10),
+                child: TextField(
+                  // keyboardType: KeyboardKey.number,
+                  controller: myGradeController,
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.percent),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      hintText: "Enter your grade ... "),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print(myGradeController.text);
+                        int? grade = int.tryParse(myGradeController.text);
+
+                        if (grade == null || grade > 100 || grade < 0) {
+                          print("Not a number");
+                          gradeLetter.text = "Error";
+                          return;
+                        }
+                        if (grade >= 90) {
+                          print("Grade = A");
+                          gradeLetter.text = "A";
+                        } else if (grade >= 80) {
+                          print("Grade = B");
+                          gradeLetter.text = "B";
+                        } else if (grade >= 70) {
+                          print("Grade = C");
+                          gradeLetter.text = "C";
+                        } else if (grade >= 60) {
+                          print("Grade = D");
+                          gradeLetter.text = "D";
+                        } else {
+                          print("Grade = F");
+                          gradeLetter.text = "F";
+                        }
+                      },
+                      child: Text("Calculate"),
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                gradeLetter.text,
+                style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
