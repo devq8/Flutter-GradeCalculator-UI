@@ -5,11 +5,17 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final myGradeController = TextEditingController();
-  final gradeLetter = TextEditingController();
+
+  String gradeLetter = "";
 
   // This widget is the root of your application.
   @override
@@ -61,37 +67,41 @@ class MyApp extends StatelessWidget {
                         print(myGradeController.text);
                         int? grade = int.tryParse(myGradeController.text);
 
-                        if (grade == null || grade > 100 || grade < 0) {
-                          print("Not a number");
-                          gradeLetter.text = "Error";
-                          return;
-                        }
-                        if (grade >= 90) {
-                          print("Grade = A");
-                          gradeLetter.text = "A";
-                        } else if (grade >= 80) {
-                          print("Grade = B");
-                          gradeLetter.text = "B";
-                        } else if (grade >= 70) {
-                          print("Grade = C");
-                          gradeLetter.text = "C";
-                        } else if (grade >= 60) {
-                          print("Grade = D");
-                          gradeLetter.text = "D";
-                        } else {
-                          print("Grade = F");
-                          gradeLetter.text = "F";
-                        }
+                        setState(() {
+                          if (grade == null || grade > 100 || grade < 0) {
+                            print("Not a number");
+                            gradeLetter = "Error";
+                            return;
+                          }
+                          if (grade >= 90) {
+                            print("Grade = A");
+                            gradeLetter = "A";
+                          } else if (grade >= 80) {
+                            print("Grade = B");
+                            gradeLetter = "B";
+                          } else if (grade >= 70) {
+                            print("Grade = C");
+                            gradeLetter = "C";
+                          } else if (grade >= 60) {
+                            print("Grade = D");
+                            gradeLetter = "D";
+                          } else {
+                            print("Grade = F");
+                            gradeLetter = "F";
+                          }
+                        });
                       },
                       child: Text("Calculate"),
                     ),
                   ),
                 ],
               ),
-              Text(
-                gradeLetter.text,
-                style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),
-              ),
+              if (!gradeLetter.isEmpty)
+                Text(
+                  gradeLetter,
+                  style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),
+                ),
+              Text('The End')
             ],
           ),
         ),
@@ -183,4 +193,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+void x() {
+  var n = "khaled";
+
+  List number = [
+    2,
+    3,
+    if (n == 'khaled') 6,
+    8,
+  ];
 }
